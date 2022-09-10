@@ -34,6 +34,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 			.anyRequest()
 			.authenticated().and()
 			.formLogin();
+		
+		http.logout()
+			.invalidateHttpSession(true);
+			
 
 		// disable frameoptions to enable h2 console in browser
 		http.headers().frameOptions().disable();
