@@ -16,3 +16,5 @@ create user JSON format:
     "password" : "",
     "name" : ""
   }
+
+database : H2 Database (in-memory)
