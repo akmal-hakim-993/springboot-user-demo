@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.springboot.web.demo.userDemo.dto.UserDto;
 import com.springboot.web.demo.userDemo.model.User;
 import com.springboot.web.demo.userDemo.service.user.UserService;
+import com.springboot.web.demo.userDemo.util.UserUtil;
 
 @RestController
 @Transactional
@@ -46,19 +48,23 @@ class UserController {
     }
  
     @PostMapping("/create")
-    public User createUser(@RequestBody User user) {
+    public User createUser(@RequestBody UserDto dto) {
+    	if(dto.getUsername().isBlank() || dto.getPassword().isBlank()) return new User();
+		User user = UserUtil.dtoToUserMap(dto);
+		
     	return userservice.createUser(user);
     }
     
     @PutMapping(value = "/{username}")
-    public String updateUser(@PathVariable( "username" ) String username, @RequestBody User user) {
+    public String updateUser(@PathVariable( "username" ) String username, @RequestBody UserDto dto) {	
+    	User user = UserUtil.dtoToUserMap(dto);
+    	
     	return userservice.updateUser(username, user);
     }
 
     @DeleteMapping(value = "/{username}")
     public String deleteUser(@PathVariable("username") String username) {
-    	userservice.deleteUser(username);
-    	return "user "+ username +" has been deleted";
+    	return userservice.deleteUser(username);
     }
     
 }
