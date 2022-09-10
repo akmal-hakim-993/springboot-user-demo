@@ -17,4 +17,7 @@ create user JSON format:
     "name" : ""
   }
 
+admin:
+  username : admin
+  password : admin
 database : H2 Database (in-memory)
