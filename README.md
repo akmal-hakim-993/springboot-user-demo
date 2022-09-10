@@ -12,7 +12,7 @@ endpoints:
 
 create user JSON format:
   {
-    "username" : ""
-    "password" : ""
+    "username" : "",
+    "password" : "",
     "name" : ""
   }
