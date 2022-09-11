@@ -8,26 +8,14 @@ public abstract class UserUtil {
 
 	public static User updateRequired(User existingRec, User updateRec) {
 		
-		if(!updateRec.getUsername().isEmpty())
+		if(updateRec.getUsername() != null)
 			existingRec.setUsername(updateRec.getUsername());
-		if(!updateRec.getName().isEmpty())
+		if(updateRec.getName() != null)
 			existingRec.setName(updateRec.getName());
-		if(!updateRec.getPassword().isEmpty())
+		if(updateRec.getPassword() != null)
 			existingRec.setPassword(updateRec.getPassword());
 		
 		return existingRec;
-	}
-	
-	public static User nullCheck(User user) {
-		
-		if(user.getName() == null)
-			user.setName("");
-		if(user.getUsername() == null)
-			user.setName("");
-		if(user.getPassword() == null)
-			user.setName("");
-		
-		return user;
 	}
 	
 	public static User dtoToUserMap(UserDto dto) {
@@ -37,8 +25,6 @@ public abstract class UserUtil {
 		user.setUsername(dto.getUsername());
 		user.setPassword(dto.getPassword());
 		user.setUserRole(UserRole.USER);
-		
-		nullCheck(user);
 		
 		return user;
 	}
