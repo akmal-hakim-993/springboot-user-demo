@@ -6,8 +6,11 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -20,24 +23,27 @@ import com.springboot.web.demo.userDemo.model.User;
 import com.springboot.web.demo.userDemo.service.user.UserService;
 import com.springboot.web.demo.userDemo.util.UserUtil;
 
-@RestController
-@Transactional
+@Controller
 @RequestMapping("/api/user")
-class UserController {
+public class UserController {
 
 	private UserService userservice;
     
     public UserController(UserService userService) {
     	this.userservice = userService;
     }
-        
+     
+    /**
+     * 
+     * End points
+     */
     @GetMapping("/all")
     public List<User> findAllUsers() {
          return userservice.findAllUser();
     }
  
     @GetMapping("/{username}")
-    public ResponseEntity<User> findUserByUsername(@PathVariable(value = "username") String username) {
+    public ResponseEntity<User> findUserByUsername(@PathVariable(value = "username") String username){
         Optional<User> user = Optional.ofNullable(userservice.findByUsername(username));
         
         if(user.isPresent()) {
@@ -48,23 +54,41 @@ class UserController {
     }
  
     @PostMapping("/create")
-    public User createUser(@RequestBody UserDto dto) {
-    	if(dto.getUsername().isBlank() || dto.getPassword().isBlank()) return new User();
+    public String createUser(@ModelAttribute("user") UserDto dto) {
+    	if(dto.getUsername().isBlank() || dto.getPassword().isBlank()) return "redirect:/registration?error";
 		User user = UserUtil.dtoToUserMap(dto);
+		userservice.createUser(user);
 		
-    	return userservice.createUser(user);
+    	return "redirect:/registration?success";
     }
     
-    @PutMapping(value = "/{username}")
+    @PutMapping("/{username}")
     public String updateUser(@PathVariable( "username" ) String username, @RequestBody UserDto dto) {	
     	User user = UserUtil.dtoToUserMap(dto);
     	
     	return userservice.updateUser(username, user);
     }
 
-    @DeleteMapping(value = "/{username}")
+    @DeleteMapping("/{username}")
     public String deleteUser(@PathVariable("username") String username) {
     	return userservice.deleteUser(username);
     }
     
+    /*
+     * Show form
+     */
+    
+    @GetMapping("/signup")
+    public String showRegistrationForm() {
+    	return "registration";
+    }
+    
+    /**
+     * Model Attribute
+     */
+    
+    @ModelAttribute("user")
+    public UserDto userDto() {
+    	return new UserDto();
+    }
 }
