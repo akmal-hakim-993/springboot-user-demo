@@ -21,7 +21,6 @@ import com.springboot.web.demo.userDemo.service.user.UserService;
 import com.springboot.web.demo.userDemo.util.UserUtil;
 
 @RestController
-@Transactional
 @RequestMapping("/api/user")
 class UserController {
 
