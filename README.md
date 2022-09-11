@@ -1,7 +1,7 @@
 # springboot-user-demo
-Demo webApp for userdemo.
-Deployed to heroku.
-Test using Postman (with Basic Auth in header) 
+Demo webApp for userdemo.  
+Deployed to heroku.  
+Test using Postman (with Basic Auth in header)  
 link: https://user-demo-pnet.herokuapp.com
 
 endpoints:
